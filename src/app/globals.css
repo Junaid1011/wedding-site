@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-midnight: #0F172A;
+  /* Using a slightly more modern dark blue/slate than pure midnight */
+  --color-midnight-light: #1E293B;
+  --color-rose-gold: #B76E79;
+  --color-rose-gold-light: #E5B5BE;
+  --color-silver: #94A3B8;
+  --color-white: #F8FAFC;
+
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --font-script: var(--font-script);
+}
+
+:root {
+  --background: var(--color-midnight);
+  --foreground: var(--color-white);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
