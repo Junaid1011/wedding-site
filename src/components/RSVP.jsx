@@ -75,7 +75,7 @@ export default function RSVP() {
                 >
                     RSVP
                 </motion.h2>
-                <p className="text-white/60">Please let us know if you can make it by November 1st.</p>
+                <p className="text-white/60">Please let us know if you can make it.</p>
             </div>
 
             <div className="max-w-xl mx-auto">

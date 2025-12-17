@@ -21,7 +21,7 @@ const greatVibes = Great_Vibes({
 });
 
 export const metadata = {
-  title: "Sarah & Michael | Wedding Celebration",
+  title: "Kajal & Junaid | Wedding Celebration",
   description: "Join us in celebrating our love.",
 };
 
