@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import Section from "@/components/ui/Section";
 
 const images = [
-    { src: "/WhatsApp Image 2025-12-17 at 11.40.17 AM.jpeg", alt: "Couple Photo 1", className: "md:col-span-2 md:row-span-2", imgClass: "object-top" },
+    { src: "/Pic1.jpeg", alt: "Couple Photo 1", className: "md:col-span-2 md:row-span-2", imgClass: "object-top" },
     { src: "/gallery-2.jpg", alt: "Couple Photo 2", className: "md:col-span-1 md:row-span-1", imgClass: "object-[50%_25%]" },
     { src: "/gallery-3.jpg", alt: "Couple Photo 3", className: "md:col-span-1 md:row-span-1", imgClass: "object-center" },
-    { src: "/WhatsApp Image 2025-12-17 at 11.40.28 AM.jpeg", alt: "Couple Photo 4", className: "md:col-span-1 md:row-span-1", imgClass: "object-top" },
-    { src: "/WhatsApp Image 2025-12-17 at 11.40.36 AM.jpeg", alt: "Couple Photo 5", className: "md:col-span-1 md:row-span-2", imgClass: "object-center" },
+    { src: "/Pic2.jpeg", alt: "Couple Photo 4", className: "md:col-span-1 md:row-span-1", imgClass: "object-top" },
+    { src: "/Pic4.jpeg", alt: "Couple Photo 5", className: "md:col-span-1 md:row-span-2", imgClass: "object-center" },
     { src: "/gallery-6.jpg", alt: "Couple Photo 6", className: "md:col-span-1 md:row-span-1", imgClass: "object-center" },
 ];
 
