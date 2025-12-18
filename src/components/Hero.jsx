@@ -47,7 +47,16 @@ export default function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 1 }}
                 >
-                    <Button variant="primary" className="bg-white text-midnight hover:bg-white/90 border-none">
+                    <Button
+                        variant="primary"
+                        className="bg-white text-midnight hover:bg-white/90 border-none"
+                        onClick={() => {
+                            const rsvpSection = document.getElementById('rsvp');
+                            if (rsvpSection) {
+                                rsvpSection.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }}
+                    >
                         Save the Date
                     </Button>
                 </motion.div>
