@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Section from "@/components/ui/Section";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
+import { Bubble, Sparkle, FloatingHeart, GlowParticle } from "@/components/ui/Animations";
 
 export default function RSVP() {
     const [formStatus, setFormStatus] = useState("idle"); // idle, submitting, success
@@ -15,6 +16,52 @@ export default function RSVP() {
         attending: "Yes, joyfully!",
         message: "",
     });
+
+    // Generate animations client-side only
+    const [bubbles, setBubbles] = useState([]);
+    const [sparkles, setSparkles] = useState([]);
+    const [hearts, setHearts] = useState([]);
+    const [glowParticles, setGlowParticles] = useState([]);
+
+    useEffect(() => {
+        setBubbles(
+            Array.from({ length: 12 }, (_, i) => ({
+                id: i,
+                delay: Math.random() * 8,
+                duration: 8 + Math.random() * 6,
+                size: 8 + Math.random() * 20,
+                left: Math.random() * 100,
+                swayX1: Math.random() * 30 - 15,
+                swayX2: Math.random() * 50 - 25,
+            }))
+        );
+        setSparkles(
+            Array.from({ length: 10 }, (_, i) => ({
+                id: i,
+                delay: Math.random() * 5,
+                x: Math.random() * 100,
+                y: Math.random() * 100,
+                repeatDelay: Math.random() * 4,
+            }))
+        );
+        setHearts(
+            Array.from({ length: 5 }, (_, i) => ({
+                id: i,
+                delay: Math.random() * 10,
+                left: Math.random() * 100,
+                duration: 10 + Math.random() * 5,
+            }))
+        );
+        setGlowParticles(
+            Array.from({ length: 6 }, (_, i) => ({
+                id: i,
+                delay: Math.random() * 3,
+                x: Math.random() * 100,
+                y: Math.random() * 100,
+                size: 4 + Math.random() * 8,
+            }))
+        );
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,7 +77,6 @@ export default function RSVP() {
 
         try {
             const formDataPayload = new FormData();
-            // Append capitalized keys (matching the guide)
             formDataPayload.append("Name", formData.name);
             formDataPayload.append("Email", formData.email);
             formDataPayload.append("Guests", formData.guests);
@@ -38,7 +84,6 @@ export default function RSVP() {
             formDataPayload.append("Message", formData.message);
             formDataPayload.append("Date", new Date().toISOString());
 
-            // Append lowercase keys (fallback in case user used lowercase headers)
             formDataPayload.append("name", formData.name);
             formDataPayload.append("email", formData.email);
             formDataPayload.append("guests", formData.guests);
@@ -51,7 +96,7 @@ export default function RSVP() {
                 {
                     method: "POST",
                     body: formDataPayload,
-                    mode: "no-cors", // Important for Google Apps Script
+                    mode: "no-cors",
                 }
             );
 
@@ -65,8 +110,22 @@ export default function RSVP() {
     };
 
     return (
-        <Section id="rsvp" className="bg-midnight-light/30">
-            <div className="text-center mb-16">
+        <Section id="rsvp" className="bg-midnight-light/30 overflow-hidden relative">
+            {/* Background animations */}
+            {bubbles.map((bubble) => (
+                <Bubble key={`bubble-${bubble.id}`} {...bubble} />
+            ))}
+            {sparkles.map((sparkle) => (
+                <Sparkle key={`sparkle-${sparkle.id}`} {...sparkle} />
+            ))}
+            {hearts.map((heart) => (
+                <FloatingHeart key={`heart-${heart.id}`} {...heart} />
+            ))}
+            {glowParticles.map((particle) => (
+                <GlowParticle key={`glow-${particle.id}`} {...particle} />
+            ))}
+
+            <div className="text-center mb-16 relative z-10">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -75,11 +134,24 @@ export default function RSVP() {
                 >
                     RSVP
                 </motion.h2>
+                <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: 96 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="h-1 bg-rose-gold mx-auto rounded-full mb-4"
+                />
                 <p className="text-white/60">Please let us know if you can make it.</p>
             </div>
 
-            <div className="max-w-xl mx-auto">
-                <Card className="relative overflow-hidden">
+            <motion.div
+                className="max-w-xl mx-auto relative z-10"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+            >
+                <Card className="relative overflow-hidden backdrop-blur-sm bg-white/5 hover:bg-white/10 transition-all duration-300">
                     <AnimatePresence mode="wait">
                         {formStatus === "success" ? (
                             <motion.div
@@ -88,10 +160,16 @@ export default function RSVP() {
                                 animate={{ opacity: 1, scale: 1 }}
                                 className="text-center py-12"
                             >
-                                <div className="text-6xl mb-4">🎉</div>
+                                <motion.div
+                                    className="text-6xl mb-4"
+                                    animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0] }}
+                                    transition={{ duration: 0.5 }}
+                                >
+                                    🎉
+                                </motion.div>
                                 <h3 className="text-3xl font-serif text-white mb-4">Thank You!</h3>
                                 <p className="text-white/70">
-                                    Your response has been recorded. We can't wait to see you!
+                                    Your response has been recorded. We can&apos;t wait to see you!
                                 </p>
                                 <Button
                                     variant="outline"
@@ -110,7 +188,12 @@ export default function RSVP() {
                                 onSubmit={handleSubmit}
                                 className="space-y-6"
                             >
-                                <div>
+                                <motion.div
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.1 }}
+                                >
                                     <label htmlFor="name" className="block text-sm font-medium text-white/70 mb-2">Full Name</label>
                                     <input
                                         id="name"
@@ -119,12 +202,17 @@ export default function RSVP() {
                                         value={formData.name}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-4 py-3 rounded-lg border border-white/10 focus:border-rose-gold focus:ring-1 focus:ring-rose-gold outline-none transition-all bg-white/5 text-white placeholder:text-white/30"
+                                        className="w-full px-4 py-3 rounded-lg border border-white/10 focus:border-rose-gold focus:ring-2 focus:ring-rose-gold/50 outline-none transition-all bg-white/5 text-white placeholder:text-white/30"
                                         placeholder="John Doe"
                                     />
-                                </div>
+                                </motion.div>
 
-                                <div>
+                                <motion.div
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.2 }}
+                                >
                                     <label htmlFor="email" className="block text-sm font-medium text-white/70 mb-2">Email Address</label>
                                     <input
                                         id="email"
@@ -133,12 +221,18 @@ export default function RSVP() {
                                         value={formData.email}
                                         onChange={handleChange}
                                         required
-                                        className="w-full px-4 py-3 rounded-lg border border-white/10 focus:border-rose-gold focus:ring-1 focus:ring-rose-gold outline-none transition-all bg-white/5 text-white placeholder:text-white/30"
+                                        className="w-full px-4 py-3 rounded-lg border border-white/10 focus:border-rose-gold focus:ring-2 focus:ring-rose-gold/50 outline-none transition-all bg-white/5 text-white placeholder:text-white/30"
                                         placeholder="john@example.com"
                                     />
-                                </div>
+                                </motion.div>
 
-                                <div className="grid grid-cols-2 gap-4">
+                                <motion.div
+                                    className="grid grid-cols-2 gap-4"
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.3 }}
+                                >
                                     <div>
                                         <label htmlFor="guests" className="block text-sm font-medium text-white/70 mb-2">Guests</label>
                                         <select
@@ -146,7 +240,7 @@ export default function RSVP() {
                                             name="guests"
                                             value={formData.guests}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 rounded-lg border border-white/10 focus:border-rose-gold focus:ring-1 focus:ring-rose-gold outline-none transition-all bg-white/5 text-white"
+                                            className="w-full px-4 py-3 rounded-lg border border-white/10 focus:border-rose-gold focus:ring-2 focus:ring-rose-gold/50 outline-none transition-all bg-white/5 text-white"
                                         >
                                             <option>1</option>
                                             <option>2</option>
@@ -161,15 +255,20 @@ export default function RSVP() {
                                             name="attending"
                                             value={formData.attending}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 rounded-lg border border-white/10 focus:border-rose-gold focus:ring-1 focus:ring-rose-gold outline-none transition-all bg-white/5 text-white"
+                                            className="w-full px-4 py-3 rounded-lg border border-white/10 focus:border-rose-gold focus:ring-2 focus:ring-rose-gold/50 outline-none transition-all bg-white/5 text-white"
                                         >
                                             <option>Yes, joyfully!</option>
                                             <option>No, regretfully.</option>
                                         </select>
                                     </div>
-                                </div>
+                                </motion.div>
 
-                                <div>
+                                <motion.div
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.4 }}
+                                >
                                     <label htmlFor="message" className="block text-sm font-medium text-white/70 mb-2">Message (Optional)</label>
                                     <textarea
                                         id="message"
@@ -177,24 +276,32 @@ export default function RSVP() {
                                         value={formData.message}
                                         onChange={handleChange}
                                         rows={3}
-                                        className="w-full px-4 py-3 rounded-lg border border-white/10 focus:border-rose-gold focus:ring-1 focus:ring-rose-gold outline-none transition-all bg-white/5 text-white placeholder:text-white/30"
+                                        className="w-full px-4 py-3 rounded-lg border border-white/10 focus:border-rose-gold focus:ring-2 focus:ring-rose-gold/50 outline-none transition-all bg-white/5 text-white placeholder:text-white/30"
                                         placeholder="Any dietary restrictions or sweet notes?"
                                     />
-                                </div>
+                                </motion.div>
 
-                                <Button
-                                    type="submit"
-                                    variant="primary"
-                                    className="w-full"
-                                    disabled={formStatus === "submitting"}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: 0.5 }}
+                                    whileHover={{ scale: 1.02 }}
                                 >
-                                    {formStatus === "submitting" ? "Sending..." : "Confirm Attendance"}
-                                </Button>
+                                    <Button
+                                        type="submit"
+                                        variant="primary"
+                                        className="w-full"
+                                        disabled={formStatus === "submitting"}
+                                    >
+                                        {formStatus === "submitting" ? "Sending..." : "Confirm Attendance"}
+                                    </Button>
+                                </motion.div>
                             </motion.form>
                         )}
                     </AnimatePresence>
                 </Card>
-            </div>
+            </motion.div>
         </Section>
     );
 }
