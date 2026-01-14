@@ -9,17 +9,17 @@ import Button from "@/components/ui/Button";
 const events = [
     {
         title: "Haldi",
-        date: "Feb 11, 2026",
-        time: "7:00 PM onwards",
+        date: "Feb 12, 2026",
+        time: "12:00 PM onwards",
         location: "Noida",
         description: "A joyful ceremony filled with turmeric, laughter, and blessings, where love is showered and traditions bring everyone together.",
     },
     {
-        title: "Mehendi",
+        title: "Mehndi",
         date: "Feb 12, 2026",
-        time: "4:00 PM onwards",
-        location: "Home",
-        description: "An afternoon of henna, music, and colorful festivities. Dress code: Colorful & Vibrant.",
+        time: "7:00 PM onwards",
+        location: "Noida",
+        description: "An evening of henna, music, and colorful festivities. Dress code: Colorful & Vibrant.",
     },
 
     {
